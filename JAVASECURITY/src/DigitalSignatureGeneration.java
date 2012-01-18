@@ -17,6 +17,16 @@ import java.security.SignatureException;
 
 public class DigitalSignatureGeneration {	
 	private static KeyPair keyPair=null;
+	static{
+		try {
+			keyPair=keyPairGenerator();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, IOException {
 		//Generate a public & Private Key
 		/*KeyPair keyPair = keyPairGenerator();
@@ -28,17 +38,16 @@ public class DigitalSignatureGeneration {
 		
 		byte[] signature= getSingnature();
 		System.out.println("signature: "+ new String(signature));*/
-		keyPair=keyPairGenerator();
 		storeSignature();
 		storePublicKey();
 	}
 
-	private static PublicKey getPublicKey(KeyPair keyPair) {
+	private static PublicKey getPublicKey() {
 		PublicKey publicKey=keyPair.getPublic();
 		return publicKey;
 	}
 
-	private static PrivateKey getPrivateKey(KeyPair keyPair) {
+	private static PrivateKey getPrivateKey() {
 		PrivateKey privateKey=keyPair.getPrivate();
 		return privateKey;
 	}
@@ -53,7 +62,7 @@ public class DigitalSignatureGeneration {
 	}
 	private static byte[] getSingnature() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, IOException, SignatureException{
 		Signature signature=Signature.getInstance("SHA1withDSA","SUN");
-		signature.initSign(keyPair.getPrivate());		
+		signature.initSign(getPrivateKey());		
 		FileInputStream fis = new FileInputStream("test.txt");
 		BufferedInputStream bufin = new BufferedInputStream(fis);
 		byte[] buffer = new byte[1024];
@@ -72,12 +81,9 @@ public class DigitalSignatureGeneration {
 	}
 	private static void storePublicKey() throws IOException, NoSuchAlgorithmException, NoSuchProviderException{
 		FileOutputStream fileOutputStream=new FileOutputStream("publicKey");		
-		PublicKey publicKey=getPublicKey(keyPair);
+		PublicKey publicKey=getPublicKey();
 		fileOutputStream.write(publicKey.getEncoded());
 		fileOutputStream.close();
 		
 	}
-	
-	
-
 }
