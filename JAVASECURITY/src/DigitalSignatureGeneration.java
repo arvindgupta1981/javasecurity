@@ -28,16 +28,7 @@ public class DigitalSignatureGeneration {
 		
 	}
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException, IOException {
-		//Generate a public & Private Key
-		/*KeyPair keyPair = keyPairGenerator();
-		PrivateKey privateKey = getPrivateKey(keyPair);
-		PublicKey publicKey = getPublicKey(keyPair);
 		
-		System.out.println("Private Key: "+privateKey);
-		System.out.println("Public Key: "+publicKey);
-		
-		byte[] signature= getSingnature();
-		System.out.println("signature: "+ new String(signature));*/
 		storeSignature();
 		storePublicKey();
 	}
